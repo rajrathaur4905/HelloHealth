@@ -1,17 +1,17 @@
-# HealthConnect - Symptoms Analyzer
+# HelloHealth - Symptoms Analyzer
 
-A modern web application that analyzes health symptoms using AI and provides information about possible conditions, treatments, and when to seek medical care.
+A modern web application that helps to analyze health symptoms using AI and provides information about possible conditions, treatments, and when to seek medical care.
 
 ## Project Overview
 
-**HealthConnect** is a full-stack web application consisting of:
+**HelloHealth** is a full-stack web application consisting of:
 - **Frontend**: Interactive web interface built with HTML, CSS, and JavaScript
 - **Backend**: FastAPI server that processes symptom queries using AI models
 
 ## Project Structure
 
 ```
-Code/
+Prog_Directory/
 ├── Frontend/
 │   ├── index.html          # Main HTML page with symptom checker interface
 │   ├── script.js           # JavaScript for interactivity and API calls
@@ -303,7 +303,7 @@ For issues or questions:
 
 ---
 
-**Last Updated:** January 2026
+**Last Updated:** 01 Feb, 2026
 
 **Version:** 1.0
 
