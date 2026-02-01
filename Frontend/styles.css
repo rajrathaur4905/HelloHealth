@@ -1,0 +1,665 @@
+/* ===============================================
+   HEALTHCONNECT - STYLESHEET
+   ===============================================
+   This file contains all custom CSS styles for the
+   HealthConnect Symptoms Portal application.
+   The page primarily uses Tailwind CSS for utility
+   classes, but this file contains custom animations
+   and styling that requires more complex CSS rules.
+   =============================================== */
+
+/* ===============================================
+   BODY AND GENERAL TEXT STYLES
+   =============================================== */
+/* Color system variables for typography (WCAG-aware choices) */
+:root {
+    --text-primary: #F9FAFB; /* Headings/Titles */
+    --text-secondary: #A1A1AA; /* Subheadings/Descriptions */
+    --text-accent: #71717A; /* System / metadata */
+    --text-body: #D9DBDE; /* General body text fallback */
+    --text-strong-shadow: rgba(0,0,0,0.65);
+}
+
+body {
+    /* Set the default font family for the entire page */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+
+    /* Set line height for better readability */
+    line-height: 1.6;
+
+    /* Page background: glossy black with a warm brown hint and subtle highlights */
+    background-color: #511515;
+    background-image:
+        radial-gradient(1200px 600px at 10% 10%, rgba(120,60,30,0.06), transparent 18%),
+        radial-gradient(800px 400px at 90% 80%, rgba(255,255,255,0.03), transparent 12%),
+        linear-gradient(180deg, #0b0b0b 0%, #0f0b08 60%, #1a0f07 100%);
+    background-attachment: fixed;
+
+    /* Default text color set to secondary for body copy */
+    color: var(--text-secondary);
+}
+
+/* ===============================================
+   TYPOGRAPHY HIERARCHY & CONTRAST RULES
+   =============================================== */
+
+/* Headings / Titles */
+h1, h2, h3, h4, .hero-gradient h1, .symptom-card h3, footer h3 {
+    color: var(--text-primary) !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px var(--text-strong-shadow);
+}
+
+/* Primary heading emphasis (hero title) */
+.hero-gradient h1 {
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+/* Secondary / descriptive text */
+p, li, .hero-gradient p, .symptom-card p, .max-w-3xl.mx-auto p {
+    color: var(--text-secondary) !important;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* System / accent text for metadata, small labels, and footer */
+small, .text-sm, footer, footer .text-gray-400, .muted {
+    color: var(--text-accent) !important;
+    font-weight: 400;
+}
+
+/* Links & actionable text - ensure strong contrast */
+a, a:link, a:visited {
+    color: #60A5FA; /* Tailwind blue-400 as an accent color */
+}
+a:hover {
+    color: #93C5FD;
+}
+
+/* Buttons - ensure readable text on CTA buttons */
+button, .btn, .emergency-btn, .bg-blue-600 {
+    color: #FFFFFF !important;
+    font-weight: 600;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.45);
+}
+
+/* Text that may overlap gradients or move during tilt: increase sharpness */
+.hero-gradient *, .symptom-card *, .floating-header * {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.65);
+    font-weight: 500;
+}
+
+/* Small accessibility helpers */
+.text-contrast-strong {
+    color: var(--text-primary) !important;
+    text-shadow: 0 1px 2px var(--text-strong-shadow);
+}
+
+/* Ensure contrast for footer links */
+footer a, footer a:visited {
+    color: var(--text-secondary) !important;
+}
+
+/* Ensure forms, labels and inputs are readable */
+label, input, textarea, select {
+    color: var(--text-secondary) !important;
+}
+
+/* Reduce opacity of decorative text while preserving contrast */
+.muted-2 {
+    color: rgba(161,161,170,0.9) !important; /* slight increase for readability */
+}
+
+/* End typography block */ 
+
+/* ===============================================
+   HERO SECTION BACKGROUND GRADIENT
+   ===============================================
+   Creates a smooth blue gradient background for
+   the main hero/banner section of the page.
+   The gradient goes from light blue to sky blue.
+   =============================================== */
+.hero-gradient {
+    /* Transparent overlay so page background shows through while keeping readability */
+    background: transparent;
+    color: #f3f4f6;
+    position: relative; /* for bottom divider */
+}
+
+/* Make hero take full viewport height minus header (5rem) so the next section doesn't peek in */
+.hero-gradient > .max-w-7xl {
+    min-height: calc(100vh - 5rem);
+    display: flex;
+    align-items: center; /* vertical center */
+    padding-top: 2rem; /* ensure breathing room under header */
+    padding-bottom: 2.5rem;
+}
+
+/* Bottom fade divider to create a smooth transition into next section */
+.hero-gradient::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 96px;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,10,10,0.40) 60%, rgba(10,10,10,0.85) 100%);
+}
+
+/* ===============================================
+   HERO SLIDE & FADE-IN ANIMATIONS
+   ===============================================
+   Progressive slide-up and fade-in for the hero title
+   and paragraph. Uses a smooth 'ease-out' cubic-bezier
+   and respects prefers-reduced-motion for accessibility.
+   =============================================== */
+@keyframes slideFadeUp {
+    0% {
+        transform: translateY(18px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Title animation - fast start, slow end for premium feel
+   Only runs when .hero-animate is applied to the hero container */
+.hero-gradient.hero-animate h1 {
+    color: #f8fafc;
+    opacity: 0; /* start hidden until animation runs */
+    transform: translateY(18px);
+    will-change: transform, opacity;
+    animation-name: slideFadeUp;
+    animation-duration: 700ms;
+    animation-timing-function: cubic-bezier(.2,.9,.2,1);
+    animation-delay: 160ms;
+    animation-fill-mode: both;
+}
+
+/* Paragraph animation - slightly delayed and longer for subtle stagger */
+.hero-gradient.hero-animate p {
+    color: #d1d5db;
+    opacity: 0;
+    transform: translateY(18px);
+    will-change: transform, opacity;
+    animation-name: slideFadeUp;
+    animation-duration: 900ms;
+    animation-timing-function: cubic-bezier(.2,.9,.2,1);
+    animation-delay: 360ms;
+    animation-fill-mode: both;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-gradient h1,
+    .hero-gradient p {
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Ensure hero CTA buttons remain readable after animations */
+.hero-gradient .flex > a {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Ensure hero text and CTA remain readable on dark background */
+.hero-gradient .bg-white {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #f8fafc !important;
+}
+
+/* ===============================================
+   SYMPTOM CARD STYLES AND HOVER EFFECTS
+   ===============================================
+   These styles apply to the condition cards displayed
+   in the Common Health Conditions section. They include
+   smooth transitions and hover effects.
+   =============================================== */
+.symptom-card {
+    /* Add smooth animation for all property changes (0.3 seconds) */
+    transition: all 0.3s ease;
+    
+    /* Add subtle shadow to give card depth */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Hover effect for symptom cards */
+.symptom-card:hover {
+    /* Slightly lift the card upward when hovering (5px movement) */
+    transform: translateY(-5px);
+    
+    /* Increase shadow on hover to enhance the lift effect */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===============================================
+   3D TILT + GLARE EFFECT (APPLIES TO CARDS)
+   ===============================================
+   Adds a dynamic tilt toward the cursor with subtle
+   glare following the mouse. Perspective is 1000px.
+   Works on: condition cards, the symptom checker card,
+   and the emergency contact cards (selectors below).
+   =============================================== */
+
+/* Base: apply to common card selectors used on page */
+.symptom-card,
+.max-w-3xl.mx-auto.bg-white,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 400ms cubic-bezier(.2,.9,.2,1), box-shadow 400ms;
+    will-change: transform;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Slight lift + stronger shadow when pointer moves (JS will apply transforms) */
+.symptom-card:hover,
+.max-w-3xl.mx-auto.bg-white:hover,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(2,6,23,0.25);
+}
+
+/* Glare overlay follows mouse using CSS variables set by JS */
+.symptom-card::after,
+.max-w-3xl.mx-auto.bg-white::after,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--px,50%) var(--py,50%), rgba(255,255,255,0.18), rgba(255,255,255,0) 40%);
+    mix-blend-mode: overlay;
+    opacity: calc(var(--g, 0));
+    transition: opacity 180ms ease, background-position 120ms linear;
+}
+
+/* Disable heavy effects on touch devices for performance and UX */
+@media (hover: none) {
+    .symptom-card,
+    .max-w-3xl.mx-auto.bg-white,
+    .text-center.bg-white.p-6.rounded-xl.shadow-sm {
+        transform: none !important;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+    .symptom-card::after,
+    .max-w-3xl.mx-auto.bg-white::after,
+    .text-center.bg-white.p-6.rounded-xl.shadow-sm::after {
+        display: none;
+    }
+}
+
+/* ===============================================
+   SEARCH INPUT FOCUS STATE
+   ===============================================
+   Styles for when the search input field is focused
+   (clicked on or actively being used by user).
+   =============================================== */
+.search-input:focus {
+    /* Add a blue glow effect around the input when focused */
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+}
+
+/* ===============================================
+   EMERGENCY BUTTON ANIMATION
+   ===============================================
+   The emergency button has a pulsing animation to
+   draw the user's attention. It uses a custom
+   'pulse' keyframe animation defined below.
+   =============================================== */
+.emergency-btn {
+    /* Apply the pulse animation continuously (every 2 seconds) */
+    animation: pulse 2s infinite;
+}
+
+/* ===============================================
+   PULSE KEYFRAME ANIMATION
+   ===============================================
+   This animation creates a pulsing "glow" effect
+   that expands outward from the emergency button.
+   It's commonly used for attention-grabbing elements.
+   
+   Animation behavior:
+   - Starts with full opacity glow at button
+   - Expands outward to 10px
+   - Fades to transparent as it expands
+   - Creates a repeating pulse effect
+   =============================================== */
+@keyframes pulse {
+    /* Starting state: glowing red with full opacity */
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    }
+    
+    /* Middle state: glow expands to 10px and becomes transparent */
+    70% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+    
+    /* Ending state: reset to beginning for loop */
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+/* ===============================================
+   RESPONSIVE DESIGN NOTES
+   ===============================================
+   
+   This stylesheet works alongside Tailwind CSS
+   which provides responsive utility classes.
+   
+   Tailwind breakpoints used in the HTML:
+   - sm: 640px (small screens - tablets)
+   - md: 768px (medium screens - tablets/small laptops)
+   - lg: 1024px (large screens - desktop)
+   
+   Media queries and responsive behavior are handled
+   primarily through Tailwind's utility classes
+   (e.g., md:grid-cols-2, hidden md:block).
+   
+   Custom CSS here is mostly animations and states
+   that Tailwind doesn't cover out of the box.
+   =============================================== */
+
+/* ===============================================
+   FLOATING HEADER (RECTANGLE CARD) STYLES
+   ===============================================
+   Makes the site header float as a centered rectangular
+   card with rounded corners, subtle glassmorphism blur,
+   and a soft bottom border to define the edge.
+   Adds top padding to page content so it doesn't get
+   covered by the fixed header.
+   =============================================== */
+
+.floating-header {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 70;
+    width: calc(100% - 2rem);
+    max-width: 1120px;
+
+    /* Translucent frosted glass (force with !important to avoid overrides) */
+    background: rgba(255,255,255,0.05) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+
+    /* Soft bottom edge (white at 10% opacity) */
+    border-radius: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.10) !important;
+
+    /* Subtle floating shadow; flagged important to avoid utility overrides */
+    box-shadow: 0 8px 24px rgba(2,6,23,0.5) !important;
+
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.25s ease;
+}
+
+/* Ensure page content isn't hidden under the fixed header */
+.has-floating-header {
+    padding-top: 5rem;
+}
+
+/* High-contrast navigation inside the glass header */
+.floating-header a,
+.floating-header button,
+.floating-header .ml-2 {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.65) !important;
+}
+
+/* Hover and focus states for better visibility and keyboard access */
+.floating-header a:hover,
+.floating-header button:hover {
+    color: #FFFFFF !important;
+    opacity: 0.95;
+}
+.floating-header a:focus,
+.floating-header button:focus {
+    outline: 2px solid rgba(255,255,255,0.12);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.04);
+}
+
+/* Ensure utility color classes don't override header contrast */
+.floating-header .text-blue-600 { color: var(--text-primary) !important; }
+.floating-header .text-gray-600 { color: var(--text-primary) !important; }
+
+/* Reduce header radius slightly on mobile and tighten padding */
+@media (max-width: 640px) {
+    .floating-header {
+        top: 0.6rem;
+        border-radius: 10px;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .has-floating-header {
+        padding-top: 4.25rem;
+    }
+}
+
+/* ===============================================
+   EMERGENCY SECTION & FOOTER - DARK THEME ADJUSTMENTS
+   ===============================================
+   Make both the Emergency Contacts section and the
+   Footer match the site's glossy black body background
+   while keeping text and cards readable.
+   =============================================== */
+
+/* Let the page background show through (use transparent background) */
+section.bg-red-50 {
+    background: transparent !important;
+    color: #e6e6e6;
+}
+
+/* Distinct, subtle contrast for the section immediately following the hero
+   - adds a gentle surface so content below feels separated from the hero
+   - includes a soft top border for definition */
+#symptom-checker {
+    background: rgba(255,255,255,0.02); /* subtle surface */
+    border-top: 1px solid rgba(255,255,255,0.03);
+    padding-top: 3rem;
+    padding-bottom: 4rem; /* extra breathing room before next section */
+    margin-bottom: 1.5rem;
+    transition: background 300ms ease, border-color 300ms ease, padding 300ms ease;
+}
+
+/* Ensure Conditions section has its own top spacing and subtle divider */
+#conditions {
+    padding-top: 3.5rem;
+    border-top: 1px solid rgba(255,255,255,0.02);
+    transition: padding 300ms ease, border-color 300ms ease;
+}
+
+/* Accessibility: ensure the top of the content isn't hidden behind the fixed header */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem; /* ensure anchored links scroll under header comfortably */
+}
+
+/* Prevent anchored sections from being hidden behind the fixed header */
+section {
+    scroll-margin-top: 5.5rem;
+} 
+
+/* Make headings, paragraphs and CTA areas lighter for contrast */
+section.bg-red-50 h2,
+section.bg-red-50 p {
+    color: #f3f4f6;
+}
+
+/* Soften the white cards inside the emergency section to fit the dark theme */
+section.bg-red-50 .bg-white {
+    background: rgba(255,255,255,0.03) !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+    color: #e6e6e6 !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+/* Footer should match body and keep text readable */
+footer.bg-gray-800 {
+    background: transparent !important;
+    color: #e6e6e6;
+}
+
+/* Footer link colors */
+footer a {
+    color: #d1d5db;
+}
+footer a:hover {
+    color: #ffffff;
+}
+
+/* Adjust any utility text colors used inside footer */
+footer .text-gray-400 {
+    color: #bfc7cd !important;
+}
+
+/* ===============================================
+   PREMIUM DARK MODE CARD STYLES
+   ===============================================
+   Applies a glossy, dark, glass-morphism style to
+   all primary cards on the page, adds a subtle noise
+   texture, a 1px glass edge, rounded corners (16px),
+   and a deep soft shadow for depth.
+   =============================================== */
+
+.symptom-card,
+.max-w-3xl.mx-auto.bg-white,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm {
+    /* Dark radial gradient background */
+    background: radial-gradient(circle at 50% 35%, #1a1a1a 0%, #0a0a0a 100%) !important;
+
+    /* Glass edge */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    /* Rounded corners and clipping for images/overlays */
+    border-radius: 16px !important;
+    overflow: hidden;
+
+    /* Deep, soft shadow */
+    box-shadow: 0 30px 60px rgba(2,6,23,0.75);
+
+    /* Ensure readable text */
+    color: #e6e6e6 !important;
+    position: relative;
+}
+
+/* Subtle noise / grain overlay using inline SVG data URI at ~3% opacity */
+.symptom-card::before,
+.max-w-3xl.mx-auto.bg-white::before,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='1' fill='%23ffffff'/></svg>");
+    mix-blend-mode: overlay;
+    opacity: 0.03;
+    z-index: 1;
+}
+
+/* Keep content above the noise layer and the glare */
+.symptom-card > *,
+.max-w-3xl.mx-auto.bg-white > *,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ensure glare overlay sits above noise */
+.symptom-card::after,
+.max-w-3xl.mx-auto.bg-white::after,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm::after {
+    z-index: 3;
+}
+
+/* Images should be clipped and fill card width */
+.symptom-card img,
+.max-w-3xl.mx-auto.bg-white img,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* ===============================================
+   COMMON CONDITIONS - UNIFORM CARD HEIGHTS & IMAGES
+   ===============================================
+   Ensure all condition cards have equal height and
+   each image uses a consistent 16:9 aspect ratio while
+   preserving object-fit: cover to prevent distortion.
+   Uses grid-auto-rows and flexbox to equalize heights.
+   =============================================== */
+
+/* Make the conditions grid rows stretch equally */
+#conditions .grid {
+    grid-auto-rows: 1fr;
+}
+
+/* Ensure each symptom card fills the grid row and uses vertical layout */
+#conditions .symptom-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Enforce a 16:9 aspect ratio for card images (modern browsers) */
+#conditions .symptom-card img {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* Fallback for browsers that don't support aspect-ratio */
+@supports not (aspect-ratio: 1/1) {
+    #conditions .symptom-card img {
+        height: 180px; /* reasonable fallback height */
+    }
+}
+
+/* Ensure card content fills remaining space and action links stay aligned */
+#conditions .symptom-card .p-6 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1 1 auto;
+}
+
+#conditions .symptom-card .p-6 a {
+    margin-top: auto;
+}
+
+/* Emergency small cards: tighten padding to match aesthetic */
+.text-center.bg-white.p-6.rounded-xl.shadow-sm {
+    padding: 1.25rem !important;
+}
+
+/* Make action links/buttons stand out on dark cards */
+.symptom-card a,
+.max-w-3xl.mx-auto.bg-white a,
+.text-center.bg-white.p-6.rounded-xl.shadow-sm a {
+    color: #e6eef8 !important;
+}
+
+/* Slightly reduce tilt intensity for refined premium feel */
+/* (alter in JS if you want further tuning) */
+
+
