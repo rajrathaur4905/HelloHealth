@@ -8,14 +8,16 @@ middleware, exception handlers, and route registration.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.config import settings
+
 
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
 
     app = FastAPI(
-        title="HelloHealth API",
+        title=f"{settings.APP_NAME} API",
         description="AI-powered symptom analysis with BART zero-shot classification",
-        version="1.0.0",
+        version=settings.APP_VERSION,
         docs_url="/docs",
         redoc_url="/redoc",
     )
@@ -32,7 +34,7 @@ def _configure_middleware(app: FastAPI) -> None:
     # CORS — will be configured from environment in Phase 1
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+        allow_origins=settings.CORS_ORIGINS,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
