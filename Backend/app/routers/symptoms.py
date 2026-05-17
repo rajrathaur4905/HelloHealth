@@ -9,22 +9,25 @@ Analysis flow:
   3. Search the knowledge base (fast, deterministic)
   4. If KB misses, fall back to AI model classification
   5. Cache the result for future identical queries
-  6. Return structured response with source tracking
+  6. Save to history if user is authenticated
+  7. Return structured response with source tracking
 """
 
 import hashlib
-import json
 import logging
-from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.security import get_optional_user
+from app.database import get_db
 from app.models.schemas import (
     AnalysisSource,
     Severity,
     SymptomRequest,
     SymptomResponse,
 )
+from app.models.symptom_query import SymptomQuery
 from app.services.classifier import ClassifierService, get_classifier
 from app.services.knowledge_base import KnowledgeBaseService
 
@@ -45,7 +48,6 @@ def get_kb_service() -> KnowledgeBaseService:
 
 # ── Simple In-Memory Cache ───────────────────────────────────
 # Redis integration will replace this when Redis is connected.
-# For now, a dict-based cache demonstrates the caching pattern.
 _cache: dict[str, dict] = {}
 _CACHE_MAX_SIZE = 500
 
@@ -57,17 +59,34 @@ def _get_cache_key(query: str) -> str:
 
 
 def _get_cached_result(key: str) -> dict | None:
-    """Retrieve a cached result if it exists."""
     return _cache.get(key)
 
 
 def _set_cached_result(key: str, result: dict) -> None:
-    """Store a result in cache (with simple size cap)."""
     if len(_cache) >= _CACHE_MAX_SIZE:
-        # Evict oldest entry (FIFO)
         oldest_key = next(iter(_cache))
         del _cache[oldest_key]
     _cache[key] = result
+
+
+async def _save_to_history(
+    db: AsyncSession,
+    user_id: str,
+    query: str,
+    response: SymptomResponse,
+) -> None:
+    """Persist a symptom analysis to the user's history."""
+    record = SymptomQuery(
+        user_id=user_id,
+        symptoms_text=query,
+        diagnosis=response.diagnosis,
+        confidence=response.confidence,
+        severity=response.severity.value,
+        source=response.source.value,
+    )
+    db.add(record)
+    # commit is handled by get_db dependency on request completion
+    logger.info("History saved for user %s: %s", user_id, response.diagnosis)
 
 
 # ── Endpoint ─────────────────────────────────────────────────
@@ -78,8 +97,13 @@ async def check_symptoms(
     body: SymptomRequest,
     kb: KnowledgeBaseService = Depends(get_kb_service),
     classifier: ClassifierService = Depends(get_classifier),
+    current_user=Depends(get_optional_user),
+    db: AsyncSession = Depends(get_db),
 ) -> SymptomResponse:
     """Analyze symptoms and return health information.
+
+    Works for both anonymous and authenticated users.
+    If authenticated, the result is saved to the user's history.
 
     The system uses a two-tier approach:
       1. **Knowledge Base** — fast keyword matching against 30 known conditions
@@ -95,13 +119,15 @@ async def check_symptoms(
     cached = _get_cached_result(cache_key)
     if cached:
         logger.info("Cache hit for query (key=%s)", cache_key)
-        return SymptomResponse(**cached)
+        response = SymptomResponse(**cached)
+        if current_user:
+            await _save_to_history(db, current_user.id, query, response)
+        return response
 
     # ── Step 2: Search knowledge base ────────────────────────
     kb_match = kb.search(query)
 
     if kb_match and kb_match.score >= 0.5:
-        # Strong KB match — use it directly
         condition = kb_match.condition
         response = SymptomResponse(
             diagnosis=condition["name"],
@@ -119,16 +145,15 @@ async def check_symptoms(
             kb_match.confidence,
         )
         _set_cached_result(cache_key, response.model_dump(mode="json"))
+        if current_user:
+            await _save_to_history(db, current_user.id, query, response)
         return response
 
     # ── Step 3: Fall back to AI model ────────────────────────
     classification = await classifier.classify(query)
 
     if classification and classification.confidence > 0.3:
-        # Map model label → KB condition for rich response data
         kb_id = classifier.get_kb_id_for_label(classification.label)
-
-        # Try to find the condition in KB for additional info
         condition_data = None
         if kb_id:
             for c in kb._conditions if kb._loaded else []:
@@ -148,7 +173,6 @@ async def check_symptoms(
                 disclaimer=kb.disclaimer,
             )
         else:
-            # Model matched but no KB data — return basic response
             response = SymptomResponse(
                 diagnosis=classification.label.title(),
                 confidence=classification.confidence,
@@ -166,6 +190,8 @@ async def check_symptoms(
             classification.confidence,
         )
         _set_cached_result(cache_key, response.model_dump(mode="json"))
+        if current_user:
+            await _save_to_history(db, current_user.id, query, response)
         return response
 
     # ── Step 4: Fallback — no confident match ────────────────
@@ -181,6 +207,8 @@ async def check_symptoms(
         disclaimer=kb.disclaimer,
     )
     logger.info("No confident match — returning fallback response")
+    if current_user:
+        await _save_to_history(db, current_user.id, query, response)
     return response
 
 

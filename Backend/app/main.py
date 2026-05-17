@@ -14,7 +14,7 @@ from app.config import settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging_config import setup_logging
 from app.middleware.request_id import RequestIDMiddleware, request_id_filter
-from app.routers import auth, health, symptoms
+from app.routers import auth, health, history, symptoms
 
 
 def create_app() -> FastAPI:
@@ -65,9 +65,7 @@ def _register_routers(app: FastAPI) -> None:
     app.include_router(health.router)
     app.include_router(symptoms.router)
     app.include_router(auth.router)
-
-    # Routers to be added in later phases:
-    # app.include_router(history.router)     — Phase 4
+    app.include_router(history.router)
 
     @app.get("/", tags=["root"])
     async def root():

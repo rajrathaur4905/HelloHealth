@@ -27,7 +27,7 @@ if config.config_file_name is not None:
 # against the database to detect schema changes.
 # IMPORTANT: Import all models here so Base.metadata knows about them.
 from app.models.user import User  # noqa: F401
-# from app.models.symptom_query import SymptomQuery  # Phase 4
+from app.models.symptom_query import SymptomQuery  # noqa: F401
 target_metadata = Base.metadata
 
 
