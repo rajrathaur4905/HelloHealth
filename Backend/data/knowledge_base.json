@@ -1,0 +1,483 @@
+{
+  "conditions": [
+    {
+      "id": "headache",
+      "name": "Tension Headache / Migraine",
+      "keywords": ["headache", "head pain", "head hurts", "head ache", "migraine", "throbbing head"],
+      "severity": "mild",
+      "confidence_range": [0.80, 0.95],
+      "description": "A common condition causing pain and pressure in the head, often related to stress, tension, or dehydration.",
+      "symptoms": ["head pain", "pressure around forehead", "sensitivity to light", "neck stiffness"],
+      "recommendations": [
+        "Rest in a quiet, dark room",
+        "Stay hydrated and drink water",
+        "Take over-the-counter pain relievers like ibuprofen or acetaminophen",
+        "Apply a cold or warm compress to your forehead"
+      ],
+      "when_to_see_doctor": "If headaches are severe, sudden, recurring frequently, or accompanied by vision changes, confusion, or fever."
+    },
+    {
+      "id": "fever",
+      "name": "Fever / Viral Infection",
+      "keywords": ["fever", "high temperature", "chills", "feeling hot", "feverish", "shivering"],
+      "severity": "moderate",
+      "confidence_range": [0.82, 0.92],
+      "description": "An elevated body temperature, usually a sign that the body is fighting an infection.",
+      "symptoms": ["elevated temperature", "chills", "sweating", "body aches", "fatigue"],
+      "recommendations": [
+        "Rest and get plenty of sleep",
+        "Stay hydrated with water, juice, or broth",
+        "Take fever-reducing medication such as acetaminophen",
+        "Wear light clothing and use a light blanket"
+      ],
+      "when_to_see_doctor": "If fever exceeds 103°F (39.4°C), lasts more than 3 days, or is accompanied by severe headache, stiff neck, rash, or difficulty breathing."
+    },
+    {
+      "id": "cough",
+      "name": "Common Cold / Upper Respiratory Infection",
+      "keywords": ["cough", "coughing", "dry cough", "wet cough", "persistent cough", "throat tickle"],
+      "severity": "mild",
+      "confidence_range": [0.78, 0.90],
+      "description": "A reflex action to clear the airways, commonly caused by viral infections, allergies, or irritants.",
+      "symptoms": ["coughing", "sore throat", "runny nose", "mild chest discomfort", "congestion"],
+      "recommendations": [
+        "Drink warm fluids like tea with honey",
+        "Use cough drops or lozenges to soothe the throat",
+        "Use a humidifier to add moisture to the air",
+        "Avoid smoke and other irritants"
+      ],
+      "when_to_see_doctor": "If cough lasts more than 3 weeks, produces blood or thick green/yellow mucus, or is accompanied by shortness of breath or wheezing."
+    },
+    {
+      "id": "fatigue",
+      "name": "Fatigue / Chronic Tiredness",
+      "keywords": ["fatigue", "tired", "exhausted", "no energy", "lethargy", "sleepy", "drowsy", "worn out"],
+      "severity": "mild",
+      "confidence_range": [0.72, 0.88],
+      "description": "Persistent tiredness that is not relieved by rest, potentially caused by lifestyle factors, stress, or underlying conditions.",
+      "symptoms": ["constant tiredness", "difficulty concentrating", "low motivation", "muscle weakness"],
+      "recommendations": [
+        "Improve sleep hygiene — aim for 7-9 hours of quality sleep",
+        "Exercise regularly, even a short daily walk helps",
+        "Eat a balanced diet rich in iron and vitamins",
+        "Manage stress through relaxation techniques"
+      ],
+      "when_to_see_doctor": "If fatigue is severe, persistent for more than 2 weeks, or accompanied by unexplained weight loss, pain, or mood changes."
+    },
+    {
+      "id": "nausea",
+      "name": "Nausea / Digestive Upset",
+      "keywords": ["nausea", "nauseous", "queasy", "feel like vomiting", "upset stomach", "sick to stomach"],
+      "severity": "mild",
+      "confidence_range": [0.80, 0.90],
+      "description": "An uneasy sensation in the stomach often preceding vomiting, caused by various factors including food, motion, or illness.",
+      "symptoms": ["stomach discomfort", "urge to vomit", "loss of appetite", "dizziness"],
+      "recommendations": [
+        "Sip clear fluids slowly — water, ginger ale, or electrolyte drinks",
+        "Eat bland foods like crackers, rice, or toast",
+        "Avoid greasy, spicy, or heavy foods",
+        "Rest and avoid sudden movements"
+      ],
+      "when_to_see_doctor": "If nausea persists for more than 48 hours, is accompanied by severe abdominal pain, blood in vomit, or signs of dehydration."
+    },
+    {
+      "id": "sore_throat",
+      "name": "Sore Throat / Pharyngitis",
+      "keywords": ["sore throat", "throat pain", "throat hurts", "scratchy throat", "swallowing pain", "painful swallowing"],
+      "severity": "mild",
+      "confidence_range": [0.80, 0.92],
+      "description": "Pain, scratchiness, or irritation of the throat that often worsens when swallowing.",
+      "symptoms": ["throat pain", "difficulty swallowing", "red swollen tonsils", "hoarse voice"],
+      "recommendations": [
+        "Gargle with warm salt water several times a day",
+        "Drink warm liquids like tea with honey",
+        "Use throat lozenges or sprays for temporary relief",
+        "Rest your voice and stay hydrated"
+      ],
+      "when_to_see_doctor": "If sore throat is severe, lasts more than a week, or is accompanied by high fever, rash, joint pain, or difficulty breathing."
+    },
+    {
+      "id": "back_pain",
+      "name": "Back Pain / Muscle Strain",
+      "keywords": ["back pain", "lower back pain", "back ache", "backache", "spine pain", "back hurts", "back stiffness"],
+      "severity": "moderate",
+      "confidence_range": [0.75, 0.88],
+      "description": "Pain in the upper or lower back, commonly caused by muscle strain, poor posture, or prolonged sitting.",
+      "symptoms": ["aching muscles", "stabbing pain", "limited flexibility", "difficulty standing straight"],
+      "recommendations": [
+        "Apply ice for the first 48 hours, then switch to heat",
+        "Maintain gentle movement — avoid prolonged bed rest",
+        "Practice good posture and ergonomic sitting",
+        "Take over-the-counter anti-inflammatory medication"
+      ],
+      "when_to_see_doctor": "If pain radiates down the legs, causes numbness/tingling, follows an injury, or is accompanied by bladder/bowel issues."
+    },
+    {
+      "id": "stomach_pain",
+      "name": "Abdominal Pain / Gastritis",
+      "keywords": ["stomach pain", "stomach ache", "abdominal pain", "belly pain", "stomach cramps", "tummy ache", "stomach hurts"],
+      "severity": "moderate",
+      "confidence_range": [0.75, 0.90],
+      "description": "Pain or discomfort in the abdominal area, which can be caused by indigestion, gas, infection, or inflammation.",
+      "symptoms": ["cramping", "bloating", "gas", "tenderness in abdomen", "loss of appetite"],
+      "recommendations": [
+        "Eat smaller, more frequent meals",
+        "Avoid spicy, fatty, or acidic foods",
+        "Try over-the-counter antacids for mild cases",
+        "Apply a warm compress to the abdomen"
+      ],
+      "when_to_see_doctor": "If pain is severe, localized to one area, accompanied by fever, vomiting blood, or persists for more than 24 hours."
+    },
+    {
+      "id": "dizziness",
+      "name": "Dizziness / Vertigo",
+      "keywords": ["dizzy", "dizziness", "lightheaded", "vertigo", "room spinning", "feeling faint", "unsteady"],
+      "severity": "moderate",
+      "confidence_range": [0.72, 0.85],
+      "description": "A sensation of unsteadiness, lightheadedness, or the feeling that the room is spinning.",
+      "symptoms": ["loss of balance", "lightheadedness", "spinning sensation", "nausea with movement"],
+      "recommendations": [
+        "Sit or lie down immediately when feeling dizzy",
+        "Stay hydrated and eat regular meals",
+        "Avoid sudden changes in position",
+        "Limit caffeine, alcohol, and tobacco"
+      ],
+      "when_to_see_doctor": "If dizziness is recurrent, accompanied by fainting, hearing loss, severe headache, or numbness in limbs."
+    },
+    {
+      "id": "chest_pain",
+      "name": "Chest Discomfort / Musculoskeletal Pain",
+      "keywords": ["chest pain", "chest tightness", "chest pressure", "chest hurts", "pain in chest"],
+      "severity": "severe",
+      "confidence_range": [0.65, 0.80],
+      "description": "Pain or discomfort in the chest area. While often musculoskeletal, chest pain should always be evaluated to rule out cardiac causes.",
+      "symptoms": ["sharp or dull chest pain", "tightness", "pain worsening with movement or breathing"],
+      "recommendations": [
+        "IMPORTANT: If pain is sudden, severe, or accompanied by shortness of breath, call emergency services immediately",
+        "For mild musculoskeletal chest pain, rest and take OTC pain relievers",
+        "Avoid strenuous activity until evaluated",
+        "Monitor for additional symptoms like arm pain, jaw pain, or sweating"
+      ],
+      "when_to_see_doctor": "IMMEDIATELY if accompanied by shortness of breath, arm/jaw pain, sweating, or nausea. These could indicate a cardiac emergency."
+    },
+    {
+      "id": "anxiety",
+      "name": "Anxiety Symptoms",
+      "keywords": ["anxiety", "anxious", "worried", "panic", "nervous", "restless", "cant relax", "panic attack"],
+      "severity": "moderate",
+      "confidence_range": [0.70, 0.85],
+      "description": "Feelings of worry, nervousness, or unease about something with an uncertain outcome. A common mental health condition.",
+      "symptoms": ["excessive worry", "restlessness", "rapid heartbeat", "difficulty concentrating", "sleep problems"],
+      "recommendations": [
+        "Practice deep breathing exercises — inhale 4 seconds, hold 4, exhale 4",
+        "Engage in regular physical activity",
+        "Limit caffeine and alcohol intake",
+        "Consider mindfulness or meditation practices"
+      ],
+      "when_to_see_doctor": "If anxiety significantly interferes with daily life, causes panic attacks, or is accompanied by depression or substance use."
+    },
+    {
+      "id": "insomnia",
+      "name": "Insomnia / Sleep Difficulty",
+      "keywords": ["cant sleep", "insomnia", "trouble sleeping", "sleep problems", "sleepless", "waking up at night", "not sleeping"],
+      "severity": "mild",
+      "confidence_range": [0.75, 0.88],
+      "description": "Difficulty falling asleep, staying asleep, or getting restful sleep despite adequate opportunity.",
+      "symptoms": ["difficulty falling asleep", "waking during the night", "waking too early", "daytime fatigue"],
+      "recommendations": [
+        "Maintain a consistent sleep schedule — same bedtime and wake time daily",
+        "Avoid screens for at least 30 minutes before bed",
+        "Keep your bedroom cool, dark, and quiet",
+        "Avoid caffeine after 2 PM and heavy meals before bed"
+      ],
+      "when_to_see_doctor": "If insomnia persists for more than 3 weeks, severely affects daily functioning, or is accompanied by breathing difficulties during sleep."
+    },
+    {
+      "id": "allergies",
+      "name": "Seasonal Allergies / Allergic Rhinitis",
+      "keywords": ["allergy", "allergies", "sneezing", "runny nose", "itchy eyes", "hay fever", "pollen", "allergic"],
+      "severity": "mild",
+      "confidence_range": [0.78, 0.92],
+      "description": "An immune system response to airborne allergens like pollen, dust, or pet dander.",
+      "symptoms": ["sneezing", "runny or stuffy nose", "itchy watery eyes", "scratchy throat"],
+      "recommendations": [
+        "Take over-the-counter antihistamines (cetirizine, loratadine)",
+        "Keep windows closed during high pollen days",
+        "Shower after spending time outdoors",
+        "Use a HEPA air purifier indoors"
+      ],
+      "when_to_see_doctor": "If symptoms are severe, OTC medications are not effective, or if you experience wheezing or difficulty breathing."
+    },
+    {
+      "id": "diarrhea",
+      "name": "Diarrhea / Gastroenteritis",
+      "keywords": ["diarrhea", "loose stool", "watery stool", "frequent bowel", "stomach bug", "food poisoning"],
+      "severity": "moderate",
+      "confidence_range": [0.80, 0.90],
+      "description": "Frequent loose or watery bowel movements, often caused by viral infection, bacteria, or food intolerance.",
+      "symptoms": ["frequent watery stools", "abdominal cramping", "urgency", "nausea", "bloating"],
+      "recommendations": [
+        "Stay hydrated with oral rehydration solutions or clear fluids",
+        "Follow the BRAT diet: bananas, rice, applesauce, toast",
+        "Avoid dairy, fatty, and high-fiber foods temporarily",
+        "Wash hands frequently to prevent spreading infection"
+      ],
+      "when_to_see_doctor": "If diarrhea lasts more than 3 days, contains blood, is accompanied by high fever, or shows signs of severe dehydration."
+    },
+    {
+      "id": "joint_pain",
+      "name": "Joint Pain / Arthralgia",
+      "keywords": ["joint pain", "knee pain", "elbow pain", "wrist pain", "stiff joints", "swollen joints", "arthritis"],
+      "severity": "moderate",
+      "confidence_range": [0.72, 0.85],
+      "description": "Pain, stiffness, or swelling in one or more joints, commonly caused by overuse, injury, or inflammation.",
+      "symptoms": ["pain in joints", "stiffness especially in morning", "swelling", "reduced range of motion"],
+      "recommendations": [
+        "Rest the affected joint and avoid overuse",
+        "Apply ice for swelling or heat for stiffness",
+        "Take anti-inflammatory medication like ibuprofen",
+        "Gentle stretching and low-impact exercise can help"
+      ],
+      "when_to_see_doctor": "If joint pain is sudden, severe, accompanied by significant swelling, redness, warmth, or follows an injury."
+    },
+    {
+      "id": "rash",
+      "name": "Skin Rash / Dermatitis",
+      "keywords": ["rash", "skin rash", "itchy skin", "hives", "red spots", "skin irritation", "bumps on skin"],
+      "severity": "mild",
+      "confidence_range": [0.70, 0.85],
+      "description": "A noticeable change in the texture or color of the skin, which may be itchy, bumpy, or inflamed.",
+      "symptoms": ["red patches", "itching", "bumps or blisters", "dry or flaking skin", "swelling"],
+      "recommendations": [
+        "Avoid scratching the affected area",
+        "Apply a gentle moisturizer or hydrocortisone cream",
+        "Identify and avoid potential irritants or allergens",
+        "Take an antihistamine for itching"
+      ],
+      "when_to_see_doctor": "If rash is widespread, painful, blistering, accompanied by fever, or does not improve within a week."
+    },
+    {
+      "id": "shortness_of_breath",
+      "name": "Shortness of Breath / Dyspnea",
+      "keywords": ["shortness of breath", "cant breathe", "difficulty breathing", "breathless", "out of breath", "wheezing"],
+      "severity": "severe",
+      "confidence_range": [0.68, 0.82],
+      "description": "A sensation of not getting enough air, which can range from mild discomfort to a medical emergency.",
+      "symptoms": ["labored breathing", "chest tightness", "wheezing", "gasping for air"],
+      "recommendations": [
+        "IMPORTANT: If sudden and severe, call emergency services immediately",
+        "Sit upright to help open airways",
+        "Practice pursed-lip breathing — breathe in through nose, out through pursed lips",
+        "Remove yourself from any irritants like smoke or fumes"
+      ],
+      "when_to_see_doctor": "IMMEDIATELY if breathing difficulty is sudden, severe, or accompanied by chest pain, bluish lips, or confusion."
+    },
+    {
+      "id": "constipation",
+      "name": "Constipation",
+      "keywords": ["constipation", "constipated", "cant poop", "hard stool", "irregular bowel", "bloated"],
+      "severity": "mild",
+      "confidence_range": [0.78, 0.90],
+      "description": "Infrequent or difficult bowel movements, typically defined as fewer than three per week.",
+      "symptoms": ["infrequent stools", "hard or lumpy stools", "straining", "feeling of incomplete evacuation"],
+      "recommendations": [
+        "Increase dietary fiber — fruits, vegetables, whole grains",
+        "Drink plenty of water throughout the day",
+        "Exercise regularly to stimulate bowel function",
+        "Consider over-the-counter fiber supplements if needed"
+      ],
+      "when_to_see_doctor": "If constipation is persistent, accompanied by blood in stool, severe abdominal pain, or unexplained weight loss."
+    },
+    {
+      "id": "eye_strain",
+      "name": "Eye Strain / Digital Eye Fatigue",
+      "keywords": ["eye strain", "eyes hurt", "blurry vision", "eye fatigue", "tired eyes", "screen fatigue", "dry eyes"],
+      "severity": "mild",
+      "confidence_range": [0.78, 0.90],
+      "description": "Discomfort or fatigue of the eyes after prolonged use of screens, reading, or focusing on close work.",
+      "symptoms": ["tired eyes", "blurry vision", "headache", "dry eyes", "difficulty focusing"],
+      "recommendations": [
+        "Follow the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds",
+        "Adjust screen brightness and reduce glare",
+        "Use artificial tears for dry eyes",
+        "Ensure proper lighting when reading or working"
+      ],
+      "when_to_see_doctor": "If eye pain is severe, vision changes are sudden, or symptoms persist despite rest and lifestyle changes."
+    },
+    {
+      "id": "muscle_pain",
+      "name": "Muscle Pain / Myalgia",
+      "keywords": ["muscle pain", "sore muscles", "body aches", "muscle ache", "muscle cramp", "muscle stiffness"],
+      "severity": "mild",
+      "confidence_range": [0.75, 0.88],
+      "description": "Pain or soreness in muscles, commonly caused by overuse, tension, stress, or minor injuries.",
+      "symptoms": ["localized or widespread muscle soreness", "stiffness", "tenderness", "limited movement"],
+      "recommendations": [
+        "Rest the affected muscles and avoid overexertion",
+        "Apply ice initially, then heat after 48 hours",
+        "Gentle stretching and light massage can provide relief",
+        "Take over-the-counter pain medication as needed"
+      ],
+      "when_to_see_doctor": "If muscle pain is severe, persists for more than a week, is accompanied by swelling, redness, or begins after starting a new medication."
+    },
+    {
+      "id": "ear_pain",
+      "name": "Ear Pain / Otitis",
+      "keywords": ["ear pain", "ear ache", "earache", "ear hurts", "ear infection", "ear pressure"],
+      "severity": "moderate",
+      "confidence_range": [0.75, 0.88],
+      "description": "Pain in one or both ears, commonly caused by infection, fluid buildup, or changes in pressure.",
+      "symptoms": ["sharp or dull ear pain", "feeling of fullness", "reduced hearing", "fluid drainage"],
+      "recommendations": [
+        "Apply a warm compress to the affected ear",
+        "Take over-the-counter pain relievers",
+        "Avoid inserting objects into the ear canal",
+        "Keep the ear dry — avoid swimming until resolved"
+      ],
+      "when_to_see_doctor": "If ear pain is severe, lasts more than 2 days, is accompanied by high fever, discharge, or significant hearing loss."
+    },
+    {
+      "id": "cold_flu",
+      "name": "Common Cold / Influenza",
+      "keywords": ["cold", "flu", "influenza", "runny nose", "congestion", "body aches and fever", "chills and cough"],
+      "severity": "moderate",
+      "confidence_range": [0.80, 0.92],
+      "description": "Viral infections affecting the upper respiratory tract, with flu symptoms typically being more severe than cold.",
+      "symptoms": ["congestion", "runny nose", "body aches", "cough", "fatigue", "fever in flu"],
+      "recommendations": [
+        "Rest as much as possible to help your body recover",
+        "Stay hydrated with warm fluids",
+        "Use OTC decongestants and pain relievers for symptom relief",
+        "Cover coughs and sneezes to prevent spreading"
+      ],
+      "when_to_see_doctor": "If symptoms are severe, last more than 10 days, include high persistent fever, or if you are in a high-risk group."
+    },
+    {
+      "id": "dehydration",
+      "name": "Dehydration",
+      "keywords": ["dehydrated", "dehydration", "thirsty", "dry mouth", "not drinking enough", "dark urine"],
+      "severity": "moderate",
+      "confidence_range": [0.78, 0.90],
+      "description": "Occurs when the body loses more fluid than it takes in, affecting normal body functions.",
+      "symptoms": ["excessive thirst", "dark yellow urine", "dry mouth", "fatigue", "dizziness"],
+      "recommendations": [
+        "Drink small, frequent sips of water or oral rehydration solutions",
+        "Avoid caffeine and alcohol as they can worsen dehydration",
+        "Eat water-rich foods like watermelon, cucumbers, and oranges",
+        "Rest in a cool environment"
+      ],
+      "when_to_see_doctor": "If experiencing severe thirst, very dark urine, rapid heartbeat, confusion, or fainting."
+    },
+    {
+      "id": "heartburn",
+      "name": "Heartburn / Acid Reflux (GERD)",
+      "keywords": ["heartburn", "acid reflux", "gerd", "burning chest", "indigestion", "acidic taste", "reflux"],
+      "severity": "mild",
+      "confidence_range": [0.78, 0.90],
+      "description": "A burning sensation in the chest caused by stomach acid flowing back into the esophagus.",
+      "symptoms": ["burning in chest", "acidic taste in mouth", "difficulty swallowing", "worsens when lying down"],
+      "recommendations": [
+        "Avoid trigger foods: spicy, fatty, citrus, chocolate, coffee",
+        "Eat smaller meals and do not lie down for 2-3 hours after eating",
+        "Elevate the head of your bed slightly",
+        "Try over-the-counter antacids for occasional relief"
+      ],
+      "when_to_see_doctor": "If heartburn occurs more than twice a week, interferes with daily life, or is accompanied by difficulty swallowing or unintended weight loss."
+    },
+    {
+      "id": "toothache",
+      "name": "Toothache / Dental Pain",
+      "keywords": ["toothache", "tooth pain", "tooth hurts", "dental pain", "gum pain", "jaw pain tooth"],
+      "severity": "moderate",
+      "confidence_range": [0.82, 0.92],
+      "description": "Pain in or around a tooth, commonly caused by tooth decay, infection, gum disease, or injury.",
+      "symptoms": ["sharp or throbbing tooth pain", "sensitivity to hot or cold", "swollen gums", "pain when chewing"],
+      "recommendations": [
+        "Rinse mouth with warm salt water",
+        "Take over-the-counter pain medication",
+        "Apply a cold compress to the outside of the cheek",
+        "Avoid very hot, cold, or sweet foods and drinks"
+      ],
+      "when_to_see_doctor": "See a dentist promptly if pain is severe, lasts more than 2 days, involves swelling, fever, or discharge."
+    },
+    {
+      "id": "urinary_issues",
+      "name": "Urinary Tract Symptoms",
+      "keywords": ["burning urination", "frequent urination", "uti", "urinary pain", "bladder pain", "painful peeing"],
+      "severity": "moderate",
+      "confidence_range": [0.75, 0.88],
+      "description": "Symptoms affecting urination, often indicating a urinary tract infection or other urological condition.",
+      "symptoms": ["burning sensation during urination", "frequent urge to urinate", "cloudy or strong-smelling urine", "pelvic discomfort"],
+      "recommendations": [
+        "Drink plenty of water to help flush the urinary tract",
+        "Avoid caffeine, alcohol, and spicy foods that can irritate the bladder",
+        "Urinate frequently — do not hold it in",
+        "Wipe from front to back to prevent bacterial spread"
+      ],
+      "when_to_see_doctor": "Promptly if symptoms are present — UTIs typically require prescription antibiotics. See a doctor if there is blood in urine, fever, or back pain."
+    },
+    {
+      "id": "depression_symptoms",
+      "name": "Low Mood / Depression Symptoms",
+      "keywords": ["depressed", "depression", "sad", "hopeless", "no interest", "feeling empty", "unmotivated", "feeling low"],
+      "severity": "moderate",
+      "confidence_range": [0.68, 0.82],
+      "description": "Persistent feelings of sadness, loss of interest, or hopelessness that affect daily functioning.",
+      "symptoms": ["persistent sadness", "loss of interest in activities", "changes in appetite or weight", "sleep disturbances", "difficulty concentrating"],
+      "recommendations": [
+        "Reach out to a trusted friend, family member, or counselor",
+        "Maintain a daily routine with regular sleep and meals",
+        "Engage in physical activity — even a short walk can help",
+        "Limit alcohol and avoid recreational drugs"
+      ],
+      "when_to_see_doctor": "If feelings persist for more than 2 weeks, interfere with work or relationships, or if you have thoughts of self-harm. Crisis helpline (India): iCall 9152987821, Vandrevala Foundation 1860-2662-345."
+    },
+    {
+      "id": "high_blood_pressure",
+      "name": "Hypertension Symptoms",
+      "keywords": ["high blood pressure", "hypertension", "bp high", "blood pressure", "pounding heart"],
+      "severity": "severe",
+      "confidence_range": [0.65, 0.80],
+      "description": "High blood pressure often has no symptoms but can cause headaches, shortness of breath, or nosebleeds when severely elevated.",
+      "symptoms": ["headaches", "shortness of breath", "nosebleeds", "dizziness", "chest pain"],
+      "recommendations": [
+        "Monitor blood pressure regularly",
+        "Reduce sodium intake and eat a heart-healthy diet",
+        "Exercise regularly — aim for 150 minutes per week",
+        "Manage stress and maintain a healthy weight"
+      ],
+      "when_to_see_doctor": "If blood pressure readings consistently exceed 140/90 mmHg, or immediately if experiencing severe headache, chest pain, or vision problems."
+    },
+    {
+      "id": "skin_burn",
+      "name": "Sunburn / Minor Burn",
+      "keywords": ["sunburn", "burn", "burned skin", "skin burn", "red skin from sun", "blistering skin"],
+      "severity": "mild",
+      "confidence_range": [0.80, 0.92],
+      "description": "Damage to the skin caused by overexposure to ultraviolet radiation or contact with hot surfaces.",
+      "symptoms": ["red painful skin", "warm to touch", "peeling", "blistering in severe cases"],
+      "recommendations": [
+        "Cool the burn with cool (not cold) running water for 10-20 minutes",
+        "Apply aloe vera gel or moisturizing lotion",
+        "Take ibuprofen for pain and inflammation",
+        "Stay hydrated and avoid further sun exposure"
+      ],
+      "when_to_see_doctor": "If burn covers a large area, causes large blisters, involves the face/joints/hands, or shows signs of infection."
+    }
+  ],
+  "fallback": {
+    "id": "general",
+    "name": "General Health Inquiry",
+    "severity": "unknown",
+    "confidence_range": [0.30, 0.50],
+    "description": "Your symptoms require more specific details for an accurate assessment.",
+    "recommendations": [
+      "Please describe your symptoms in more detail",
+      "Note when symptoms started and any triggers",
+      "Consult with a healthcare professional for proper diagnosis",
+      "If symptoms are severe or worsening, seek medical attention promptly"
+    ],
+    "when_to_see_doctor": "If you are unsure about your symptoms or they are causing significant concern, always consult a healthcare professional."
+  },
+  "disclaimer": "This tool provides general health information for educational purposes only. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider."
+}
