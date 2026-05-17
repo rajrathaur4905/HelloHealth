@@ -26,8 +26,7 @@ if config.config_file_name is not None:
 # Target metadata for autogenerate — Alembic compares this
 # against the database to detect schema changes.
 # IMPORTANT: Import all models here so Base.metadata knows about them.
-# As models are added in later phases, import them below:
-# from app.models.user import User              # Phase 3
+from app.models.user import User  # noqa: F401
 # from app.models.symptom_query import SymptomQuery  # Phase 4
 target_metadata = Base.metadata
 
