@@ -10,7 +10,7 @@ Endpoints:
 import logging
 import re
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,6 +25,8 @@ from app.core.security import (
 )
 from app.database import get_db
 from app.models.user import User
+from app.middleware.rate_limiter import limiter
+from app.config import settings
 
 router = APIRouter(prefix="/api/v1/auth", tags=["authentication"])
 logger = logging.getLogger(__name__)
@@ -85,7 +87,8 @@ class UserProfile(BaseModel):
 # ── Endpoints ────────────────────────────────────────────────
 
 @router.post("/register", response_model=AuthResponse, status_code=201)
-async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit(settings.RATE_LIMIT_AUTH)
+async def register(request: Request, body: RegisterRequest, db: AsyncSession = Depends(get_db)):
     """Register a new user account.
 
     Returns access and refresh tokens on successful registration.
@@ -126,7 +129,8 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=AuthResponse)
-async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit(settings.RATE_LIMIT_AUTH)
+async def login(request: Request, body: LoginRequest, db: AsyncSession = Depends(get_db)):
     """Authenticate with email and password.
 
     Returns access and refresh tokens on successful login.

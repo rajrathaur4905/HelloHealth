@@ -21,6 +21,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import get_optional_user
 from app.database import get_db
+from app.middleware.rate_limiter import limiter
+from app.config import settings
 from app.models.schemas import (
     AnalysisSource,
     Severity,
@@ -92,6 +94,7 @@ async def _save_to_history(
 # ── Endpoint ─────────────────────────────────────────────────
 
 @router.post("/check", response_model=SymptomResponse)
+@limiter.limit(settings.RATE_LIMIT_SYMPTOMS)
 async def check_symptoms(
     request: Request,
     body: SymptomRequest,
