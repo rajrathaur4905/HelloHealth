@@ -1,0 +1,56 @@
+# ==============================================================================
+# HelloHealth — Render Blueprint Specification
+# ==============================================================================
+# This file allows automatic deployment of the database, cache, and backend on Render.
+# To deploy: Go to Render Dashboard -> Blueprints -> New Blueprint Instance
+# ==============================================================================
+services:
+  # ── PostgreSQL Database ─────────────────────────────────────────────────────
+  - type: database
+    name: hellohealth-db
+    databaseName: hellohealth
+    user: postgres
+    plan: free
+
+  # ── Redis Cache ─────────────────────────────────────────────────────────────
+  - type: redis
+    name: hellohealth-cache
+    plan: free
+    ipAllowList: [] # Only allow internal traffic (no public access)
+
+  # ── FastAPI Backend Web Service ─────────────────────────────────────────────
+  - type: web
+    name: hellohealth-backend
+    env: docker
+    dockerfilePath: Backend/Dockerfile
+    dockerContext: Backend
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hellohealth-db
+          property: connectionString
+      - key: REDIS_URL
+        fromRedis:
+          name: hellohealth-cache
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
+      - key: MODEL_NAME
+        value: facebook/bart-large-mnli
+      - key: MODEL_ENABLED
+        value: "true"
+      - key: CORS_ORIGINS
+        value: '["http://localhost:3000", "https://hellohealth-frontend.vercel.app"]'
+      - key: RATE_LIMIT_SYMPTOMS
+        value: 30/minute
+      - key: RATE_LIMIT_AUTH
+        value: 5/minute
+      - key: LOG_LEVEL
+        value: INFO
