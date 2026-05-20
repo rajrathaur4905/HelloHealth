@@ -1,313 +1,168 @@
-# HelloHealth - Symptoms Analyzer
+# HelloHealth - AI Symptoms Analyzer
 
 [![CI/CD Pipeline](https://github.com/rajrathaur4905/HelloHealth/actions/workflows/ci.yml/badge.svg)](https://github.com/rajrathaur4905/HelloHealth/actions/workflows/ci.yml)
 
-A modern web application that helps to analyze health symptoms using AI and provides information about possible conditions, treatments, and when to seek medical care.
-
-
-## Project Overview
-
-**HelloHealth** is a full-stack web application consisting of:
-- **Frontend**: Interactive web interface built with HTML, CSS, and JavaScript
-- **Backend**: FastAPI server that processes symptom queries using AI models
-
-## Project Structure
-
-```
-Prog_Directory/
-├── Frontend/
-│   ├── index.html          # Main HTML page with symptom checker interface
-│   ├── script.js           # JavaScript for interactivity and API calls
-│   ├── styles.css          # Custom CSS styling
-│   └── README.md           # Frontend specific documentation
-├── Backend/
-│   ├── main.py             # FastAPI server and symptom analysis logic
-│   └── __pycache__/        # Python cache folder
-└── Theory/                 # Theory and documentation files
-```
-
-## Prerequisites
-
-Make sure you have the following installed:
-
-### For Backend:
-- **Python 3.8 or higher** - [Download Python](https://www.python.org/downloads/)
-- **pip** - Python package manager (usually comes with Python)
-
-### For Frontend:
-- Any modern web browser (Chrome, Firefox, Safari, Edge)
-- A local web server (VS Code Live Server extension or Python's http.server)
-
-## Installation & Setup
-
-### Step 1: Install Backend Dependencies
-
-Open a terminal in the `Backend` folder and run:
-
-```bash
-# Windows
-pip install fastapi uvicorn transformers torch pydantic python-multipart
-
-# macOS/Linux
-pip3 install fastapi uvicorn transformers torch pydantic python-multipart
-```
-
-**Package Descriptions:**
-- `fastapi` - Web framework for building the API
-- `uvicorn` - ASGI server to run the FastAPI app
-- `transformers` - Hugging Face library for AI models
-- `torch` - PyTorch (required for transformers)
-- `pydantic` - Data validation library
-- `python-multipart` - Required for form data parsing
-
-### Step 2: Verify Installation
-
-Check if all packages are installed correctly:
-
-```bash
-pip list
-```
-
-You should see all the installed packages including fastapi, uvicorn, and transformers.
-
-## Running the Project
-
-### Step 1: Start the Backend Server
-
-1. Open a terminal/command prompt
-2. Navigate to the `Backend` folder:
-   ```bash
-   cd Backend
-   ```
-3. Run the FastAPI server:
-   ```bash
-   # Windows
-   python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
-
-   # macOS/Linux
-   python3 -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
-   ```
-
-4. You should see output like:
-   ```
-   INFO:     Uvicorn running on http://127.0.0.1:8000
-   INFO:     Application startup complete
-   ```
-
-**Note:** Leave this terminal running! The backend must be active for the frontend to work.
-
-### Step 2: Start the Frontend
-
-You have two options to run the frontend:
-
-#### Option A: Using VS Code Live Server (Recommended)
-
-1. Install the **Live Server** extension in VS Code
-2. Right-click on `index.html` in the Frontend folder
-3. Select **"Open with Live Server"**
-4. Your browser will automatically open to `http://127.0.0.1:5500`
-
-#### Option B: Using Python's Built-in Server
-
-1. Open another terminal and navigate to the `Frontend` folder:
-   ```bash
-   cd Frontend
-   ```
-2. Run Python's built-in server:
-   ```bash
-   # Windows
-   python -m http.server 8001
-
-   # macOS/Linux
-   python3 -m http.server 8001
-   ```
-3. Open your browser and go to: `http://localhost:8001`
-
-#### Option C: Using Node.js http-server
-
-If you have Node.js installed:
-
-```bash
-npm install -g http-server
-cd Frontend
-http-server
-```
-
-### Step 3: Use the Application
-
-1. Once both the frontend and backend are running, open your browser to the frontend URL
-2. You'll see the HealthConnect homepage
-3. In the Symptom Checker section:
-   - Type a symptom in the search box (e.g., "headache", "fever", "cough")
-   - OR click on one of the common symptom tags
-4. The app will send your query to the backend and display results:
-   - **Possible Diagnosis** - What condition the symptoms might indicate
-   - **Confidence** - How confident the AI model is (0-100%)
-   - **Next Steps** - Recommendations for what to do
-
-## How It Works
-
-### Frontend → Backend Communication
-
-```
-User Input
-    ↓
-JavaScript captures input
-    ↓
-Sends POST request to http://127.0.0.1:8000/check-symptoms
-    ↓
-Backend processes with AI model
-    ↓
-Returns diagnosis, confidence, and recommendations
-    ↓
-Frontend displays results to user
-```
-
-### API Endpoint Details
-
-**Endpoint:** `POST /check-symptoms`
-
-**Request Format:**
-```json
-{
-  "symptoms": "user's symptom description"
-}
-```
-
-**Response Format:**
-```json
-{
-  "diagnosis": "Possible condition name",
-  "confidence": 0.85,
-  "recommendation": "Suggested next steps or treatment"
-}
-```
-
-## Supported Symptoms
-
-The backend comes with a knowledge base for these common symptoms:
-
-- **Headache** - Tension Headache or Migraine
-- **Fever** - Viral Infection
-- **Cough** - Common Cold or Bronchitis
-- **Fatigue** - Stress or Lack of Sleep
-- **Nausea** - Food Poisoning or Digestive Upset
-- **General Symptoms** - Fallback for unknown symptoms
-
-For symptoms not in the knowledge base, the AI model will attempt to classify them using Hugging Face's BART model.
-
-## Troubleshooting
-
-### Issue: "Cannot GET /" or Frontend won't load
-
-**Solution:** Make sure you're using a local server, not opening the HTML file directly. File:// URLs don't allow JavaScript to work properly.
-
-### Issue: "Failed to fetch" error in the browser console
-
-**Solution:** 
-1. Check that the backend is running on `http://127.0.0.1:8000`
-2. Verify the terminal shows "Application startup complete"
-3. Check that ports 8000 and 5500/8001 are not blocked by your firewall
-
-### Issue: Backend fails to load the AI model
-
-**Solution:**
-1. The first run may take time to download the model (~1-2 GB)
-2. Check your internet connection
-3. If it fails, the app will still work with the knowledge base fallback
-4. Check the terminal for error messages starting with "Error loading"
-
-### Issue: ModuleNotFoundError or ImportError
-
-**Solution:**
-1. Make sure all dependencies are installed: `pip install -r requirements.txt`
-2. Use the correct Python version (3.8+)
-3. Verify you're in the correct virtual environment
-
-### Issue: Port 8000 is already in use
-
-**Solution:**
-Change the port in the startup command:
-```bash
-python -m uvicorn main:app --reload --host 127.0.0.1 --port 8080
-```
-
-Then update the frontend URL in `script.js`:
-```javascript
-const response = await fetch('http://127.0.0.1:8080/check-symptoms', {
-```
-
-## Features
-
-✅ **AI-Powered Symptom Analysis** - Uses Hugging Face BART model for intelligent classification
-
-✅ **Quick Common Symptom Tags** - Fast access to frequently searched symptoms
-
-✅ **Confidence Scoring** - Shows how confident the AI is in its diagnosis
-
-✅ **Knowledge Base** - Built-in medical knowledge for common conditions
-
-✅ **Responsive Design** - Works on desktop, tablet, and mobile devices
-
-✅ **Modern UI** - Clean, professional interface using Tailwind CSS
-
-✅ **Emergency Contacts** - Quick access to emergency services
-
-✅ **CORS Enabled** - Secure communication between frontend and backend
-
-## Technology Stack
-
-### Frontend
-- **HTML5** - Page structure
-- **CSS3** - Styling (with Tailwind CSS framework)
-- **JavaScript (ES6+)** - Interactivity and API calls
-- **Fetch API** - HTTP requests to backend
-
-### Backend
-- **Python 3.8+** - Programming language
-- **FastAPI** - Web framework for building APIs
-- **Uvicorn** - ASGI server
-- **Transformers** - Hugging Face AI models
-- **Pydantic** - Data validation
-- **CORS Middleware** - Cross-Origin Resource Sharing
-
-## Important Notes
-
-⚠️ **Medical Disclaimer:**
-This application is for **educational purposes only** and is NOT a substitute for professional medical advice. Always consult with a qualified healthcare provider for proper diagnosis and treatment. In case of emergency, call 911 (US) or your local emergency number immediately.
-
-⚠️ **AI Limitations:**
-- The AI model is trained on general text classification, not specialized medical data
-- Confidence scores are estimates and may not be highly accurate
-- Always cross-reference results with medical professionals
-
-## Future Improvements
-
-- [ ] User authentication and history tracking
-- [ ] More comprehensive medical knowledge base
-- [ ] Integration with real medical APIs
-- [ ] Mobile app version
-- [ ] Multi-language support
-- [ ] Appointment booking integration
-- [ ] Prescription management
-- [ ] Insurance provider integration
-
-## License
-
-This project is created for educational purposes as part of the SkillCred GenAI program.
-
-## Support
-
-For issues or questions:
-1. Check the Troubleshooting section above
-2. Review the error messages in the browser console (F12)
-3. Check the backend terminal for error logs
-4. Verify both frontend and backend are running on the correct ports
+A modern, production-grade web application that helps users analyze health symptoms using Zero-Shot AI Classification. It provides instant information about possible conditions, severity levels, treatments, and recommendations on when to seek professional medical care.
 
 ---
 
-**Last Updated:** 01 Feb, 2026
+## 🏗️ Architecture Overview
 
-**Version:** 1.0
+HelloHealth is built as a decoupled, multi-service application:
 
-Happy healthy checking! 🏥
+```mermaid
+graph TD
+    Client[Next.js 15 Frontend] -->|JWT Authenticated API Requests| FastAPI[FastAPI Backend]
+    FastAPI -->|Async ORM| PostgreSQL[(PostgreSQL DB)]
+    FastAPI -->|Caching & Rate Limiting| Redis[(Redis Cache)]
+    FastAPI -->|Inference Fallback| BART[BART Zero-Shot AI Model]
+```
+
+* **Frontend**: Next.js 15 (App Router) styled with Tailwind CSS, supporting seamless Light/Dark mode transitions, dynamic state handling, and client-side route protection.
+* **Backend**: FastAPI (Python 3.11) exposing secure, asynchronous REST endpoints, integrated with SQLAlchemy (asyncpg) and SlowAPI for rate limiting.
+* **Database**: PostgreSQL for persistent user and symptom query history management, version-controlled with Alembic migrations.
+* **Cache & Rate Limiting**: Redis for storing symptom check results to reduce model load and managing API request limits.
+
+---
+
+## 📁 Project Structure
+
+```
+Prog_Directory/
+├── .github/workflows/
+│   └── ci.yml              # GitHub Actions CI lint & test pipeline
+├── Frontend/               # Next.js 15 Web Application
+│   ├── src/
+│   │   ├── app/            # App Router (pages: login, register, symptoms, history, dashboard)
+│   │   ├── components/     # Reusable UI components (Navbar, Footer, ThemeProvider)
+│   │   └── lib/            # Centralized API client (Axios with JWT interceptors)
+│   └── tailwind.config.ts  # Theme & styling configuration
+├── Backend/                # FastAPI Microservice
+│   ├── app/
+│   │   ├── middleware/     # Custom rate limiters, Request IDs, and logging
+│   │   ├── routers/        # Endpoint routers (auth, symptoms, health)
+│   │   ├── models/         # SQLAlchemy DB models
+│   │   └── schemas/        # Pydantic schemas for request/response validation
+│   ├── alembic/            # Database migration scripts
+│   ├── tests/              # Pytest test suite (health checks & symptom classification)
+│   ├── Dockerfile          # Multi-stage secure Docker build
+│   └── docker-compose.yml  # Local services orchestration
+└── render.yaml             # Render deployment blueprint spec
+```
+
+---
+
+## 🚀 Quick Start (Docker Setup)
+
+The easiest way to spin up the database, cache, and backend locally is using Docker Compose.
+
+### Prerequisites
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
+
+### Spin Up Services
+Navigate to the `Backend` directory and start the services:
+
+```bash
+cd Backend
+docker compose up -d
+```
+
+This starts:
+1. **PostgreSQL** on port `5433` (internal `5432`)
+2. **Redis** on port `6380` (internal `6379`)
+3. **FastAPI Backend** on port `8000` (runs migrations automatically)
+
+You can view the interactive API documentation at: `http://localhost:8000/docs`
+
+---
+
+## 🛠️ Manual Development Setup
+
+If you wish to run the backend and frontend separately for local development:
+
+### 1. Backend Setup
+1. Navigate to the `Backend` folder:
+   ```bash
+   cd Backend
+   ```
+2. Create and activate a Python virtual environment:
+   ```bash
+   python -m venv venv
+   # Windows
+   .\venv\Scripts\activate
+   # macOS/Linux
+   source venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+4. Copy the environment template and set your secrets:
+   ```bash
+   cp .env.example .env
+   ```
+5. Apply database migrations:
+   ```bash
+   alembic upgrade head
+   ```
+6. Start the FastAPI development server:
+   ```bash
+   uvicorn app.main:create_app --reload --factory
+   ```
+
+### 2. Frontend Setup
+1. Navigate to the `Frontend` folder:
+   ```bash
+   cd Frontend
+   ```
+2. Install npm packages:
+   ```bash
+   npm install
+   ```
+3. Copy environment configurations:
+   ```bash
+   cp .env.example .env.local
+   ```
+4. Run the Next.js development server:
+   ```bash
+   npm run dev
+   ```
+5. Open `http://localhost:3000` in your web browser.
+
+---
+
+## 🧪 Running Tests & Linting
+
+We maintain a high quality of code with automated test coverage and strict formatting checks.
+
+### Run Backend Unit Tests
+Inside the `Backend/` directory (with virtual environment active):
+```bash
+python -m pytest --cov=app
+```
+
+### Run Ruff Linter Check
+```bash
+ruff check .
+```
+
+---
+
+## 🌐 Deployment Configuration
+
+HelloHealth is pre-configured for modern hosting platforms:
+
+* **Backend & Infrastructure**: Deploy via **Render** using the provided [render.yaml](render.yaml) blueprint file (deploys PostgreSQL database, Redis cache instance, and the containerized FastAPI backend automatically).
+* **Frontend**: Deploy via **Vercel** with automatic deployment on git push. Set `NEXT_PUBLIC_API_URL` to point to your backend service on Render.
+
+---
+
+## 🛡️ Security Features
+* **Rate Limiting**: Integrated `slowapi` checks to limit registration/login to `5 req/min` and symptom lookups to `30 req/min`.
+* **JWT Authentication**: Secure stateless authentication using JSON Web Tokens with password hashing via `bcrypt`.
+* **Secure Containers**: The backend Docker image runs as a non-root `appuser` (UID `10001`) preventing privilege escalation.
+
+---
+
+## ⚠️ Medical Disclaimer
+This application is for **educational and research purposes only** and does NOT substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for medical concerns. In case of emergency, contact your local emergency services (e.g., 911) immediately.
