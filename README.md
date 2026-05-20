@@ -1,6 +1,9 @@
 # HelloHealth - Symptoms Analyzer
 
+[![CI/CD Pipeline](https://github.com/rajrathaur4905/HelloHealth/actions/workflows/ci.yml/badge.svg)](https://github.com/rajrathaur4905/HelloHealth/actions/workflows/ci.yml)
+
 A modern web application that helps to analyze health symptoms using AI and provides information about possible conditions, treatments, and when to seek medical care.
+
 
 ## Project Overview
 
