@@ -28,12 +28,12 @@ export default function DashboardPage() {
         const profileRes = await api.get("/auth/me");
         setProfile(profileRes.data.data);
 
-        // Fetch recent history for stats
         const historyRes = await api.get("/history?page=1&limit=5");
         setStats({
-          total: historyRes.data.data.total,
-          recent: historyRes.data.data.items,
+          total: historyRes.data.data.pagination.total,
+          recent: historyRes.data.data.history,
         });
+      
       } catch (error: any) {
         toast.error("Failed to load dashboard data");
       } finally {

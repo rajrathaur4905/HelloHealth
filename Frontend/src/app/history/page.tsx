@@ -24,8 +24,8 @@ export default function HistoryPage() {
     setLoading(true);
     try {
       const response = await api.get(`/history?page=${pageNumber}&limit=10`);
-      setHistory(response.data.data.items);
-      setTotalPages(response.data.data.pages);
+      setHistory(response.data.data.history);
+      setTotalPages(response.data.data.pagination.pages);
       setPage(pageNumber);
     } catch (error: any) {
       toast.error(error.message || "Failed to load history");
